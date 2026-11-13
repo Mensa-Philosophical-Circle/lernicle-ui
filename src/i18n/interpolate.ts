@@ -25,3 +25,21 @@ export function placeholdersOf(template: string): string[] {
 
   return [...names].sort();
 }
+
+const pluralRulesCache = new Map<string, Intl.PluralRules>();
+
+/** The language's plural form for a count: `one`, `few`, `other`, ... */
+export function pluralCategory(language: string, count: number): string {
+  let rules = pluralRulesCache.get(language);
+
+  if (!rules) {
+    try {
+      rules = new Intl.PluralRules(language);
+    } catch {
+      rules = new Intl.PluralRules('en');
+    }
+    pluralRulesCache.set(language, rules);
+  }
+
+  return rules.select(count);
+}

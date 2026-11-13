@@ -1,13 +1,70 @@
-/** The few formatters the kit needs. An app's own formatters satisfy this. */
-export interface UIFormatters {
-  number: (value: number | null | undefined, options?: Intl.NumberFormatOptions) => string;
-  percent: (value: number | null | undefined, options?: Intl.NumberFormatOptions) => string;
-  money: (amount: number | null | undefined, currency?: string | null) => string;
-  compactMoney: (amount: number | null | undefined, currency?: string | null) => string;
+/** Shown for a missing or non-numeric value, as in the apps. */
+const EMPTY = '—';
+const ISO_CURRENCY = /^[A-Za-z]{3}$/;
+
+export interface UIMoneyOptions extends Intl.NumberFormatOptions {
+  /** How the currency is written: symbol (default), narrow sign, ISO code or name. */
+  display?: 'symbol' | 'narrowSymbol' | 'code' | 'name';
 }
 
-function safe(value: number | null | undefined, format: (n: number) => string): string {
-  return value == null || Number.isNaN(value) ? '' : format(value);
+export interface UIPercentOptions extends Intl.NumberFormatOptions {
+  /** `points` (default): 85 means 85%. `fraction`: 0.85 means 85%. */
+  unit?: 'points' | 'fraction';
+}
+
+/**
+ * The formatters the kit needs, with the same meaning as the apps' own, so an
+ * app passes its `useFormatters()` result straight in.
+ */
+export interface UIFormatters {
+  money: (
+    amount: number | null | undefined,
+    currency?: string | null,
+    options?: UIMoneyOptions,
+  ) => string;
+  compactMoney: (
+    amount: number | null | undefined,
+    currency?: string | null,
+    options?: UIMoneyOptions,
+  ) => string;
+  number: (
+    value: number | null | undefined,
+    options?: Intl.NumberFormatOptions,
+  ) => string;
+  percent: (
+    value: number | null | undefined,
+    options?: UIPercentOptions,
+  ) => string;
+}
+
+const isNumber = (value: number | null | undefined): value is number =>
+  typeof value === 'number' && Number.isFinite(value);
+
+function formatMoney(
+  amount: number | null | undefined,
+  currency: string | null | undefined,
+  locale: string | undefined,
+  options: UIMoneyOptions = {},
+): string {
+  if (!isNumber(amount)) return EMPTY;
+  const { display = 'symbol', ...rest } = options;
+  const code = currency?.trim();
+
+  if (code && ISO_CURRENCY.test(code)) {
+    return new Intl.NumberFormat(locale, {
+      ...rest,
+      style: 'currency',
+      currency: code.toUpperCase(),
+      currencyDisplay: display,
+    }).format(amount);
+  }
+
+  const plain = new Intl.NumberFormat(locale, {
+    maximumFractionDigits: 2,
+    ...rest,
+  }).format(amount);
+
+  return code ? `${code}${plain}` : plain;
 }
 
 /** Plain Intl formatters, used when the app passes none of its own. */
@@ -15,30 +72,26 @@ export function createDefaultFormatters(
   locale: string | undefined,
   currency: string | undefined,
 ): UIFormatters {
-  const moneyIn = (own: string | null | undefined, compact: boolean) => {
-    const code = own ?? currency;
-
-    return (n: number) =>
-      code
-        ? new Intl.NumberFormat(locale, {
-            style: 'currency',
-            currency: code,
-            notation: compact ? 'compact' : 'standard',
-          }).format(n)
-        : new Intl.NumberFormat(locale, {
-            notation: compact ? 'compact' : 'standard',
-          }).format(n);
-  };
-
   return {
+    money: (amount, own, options) =>
+      formatMoney(amount, own ?? currency, locale, options),
+    compactMoney: (amount, own, options) =>
+      formatMoney(amount, own ?? currency, locale, {
+        maximumFractionDigits: 1,
+        ...options,
+        notation: 'compact',
+      }),
     number: (value, options) =>
-      safe(value, (n) => new Intl.NumberFormat(locale, options).format(n)),
-    // A ratio: 0.42 is 42%.
-    percent: (value, options) =>
-      safe(value, (n) =>
-        new Intl.NumberFormat(locale, { style: 'percent', ...options }).format(n),
-      ),
-    money: (amount, own) => safe(amount, moneyIn(own, false)),
-    compactMoney: (amount, own) => safe(amount, moneyIn(own, true)),
+      isNumber(value) ? new Intl.NumberFormat(locale, options).format(value) : EMPTY,
+    percent: (value, options = {}) => {
+      if (!isNumber(value)) return EMPTY;
+      const { unit = 'points', ...rest } = options;
+
+      return new Intl.NumberFormat(locale, {
+        maximumFractionDigits: 1,
+        ...rest,
+        style: 'percent',
+      }).format(unit === 'points' ? value / 100 : value);
+    },
   };
 }

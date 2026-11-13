@@ -1,0 +1,55 @@
+/* Tailwind 4 colour names for @lernicle/ui, for apps whose CSS variables are
+   HSL triplets read as hsl(var(--primary)) (super-dashboard). Import it after `@import "tailwindcss"`, next to the
+   `@source` line for the package. Redefine any --color-* after it to use
+   the app's own value.
+
+   scrim, warning-soft and warning-on-soft are derived from colours every
+   theme has, unless the app defines its own variable. */
+
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-success: hsl(var(--success));
+  --color-success-foreground: hsl(var(--success-foreground));
+  --color-info: hsl(var(--info));
+  --color-info-foreground: hsl(var(--info-foreground));
+  --color-warning: hsl(var(--warning));
+  --color-warning-foreground: hsl(var(--warning-foreground));
+  --color-warning-soft: color-mix(in oklab, hsl(var(--warning)) 14%, hsl(var(--background)));
+  --color-warning-on-soft: color-mix(in oklab, hsl(var(--warning)) 75%, hsl(var(--foreground)));
+  --color-scrim: hsl(var(--ui-scrim));
+  /* Lernicle type in every app; load it with @lernicle/ui/fonts.css. */
+  --font-sans: 'Instrument Sans', 'IBM Plex Sans Arabic', system-ui, sans-serif;
+  --font-display: 'Bricolage Grotesque', 'IBM Plex Sans Arabic', system-ui, sans-serif;
+  --font-brief-body: 'Instrument Sans', 'IBM Plex Sans Arabic', system-ui, sans-serif;
+  --font-brief-display: 'Bricolage Grotesque', 'IBM Plex Sans Arabic', system-ui, sans-serif;
+}
+
+/* Colours the package reads at runtime (charts). */
+:root,
+.dark {
+  --ui-scrim: var(--scrim, 240 10% 8%);
+  --ui-chart-1: hsl(var(--chart-1));
+  --ui-chart-2: hsl(var(--chart-2));
+  --ui-chart-3: hsl(var(--chart-3));
+  --ui-chart-4: hsl(var(--chart-4));
+  --ui-chart-5: hsl(var(--chart-5));
+  --ui-chart-line: hsl(var(--foreground));
+}

@@ -1,9 +1,110 @@
 /**
  * The package's own wording, in English. Every key starts with `ui.`.
- * The kit's strings move here from the owner app's `kit.ts` with the
- * components that use them.
+ * Moved from the owner app's kit catalogue.
  */
-export const en = {} as const satisfies Record<`ui.${string}`, string>;
+export const en = {
+  'ui.close': "Close",
+  'ui.chips.remove': "Remove {{name}}",
+  'ui.import.searchRows': "Search these rows",
+  'ui.import.onlyProblems': "Only rows with problems",
+  'ui.import.noRows': "No rows match.",
+  'ui.cancel': "Cancel",
+  'ui.working': "Working…",
+  'ui.tryAgain': "Try again",
+  'ui.state.nothingChanged': "Nothing has changed. Please try again in a moment.",
+  'ui.state.checkConnection': "Check your connection and try again.",
+  'ui.select.chosen': "{{count}} chosen",
+  'ui.select.placeholder': "Choose",
+  'ui.select.search': "Type to search",
+  'ui.select.none': "Nothing matches.",
+  'ui.select.loading': "Loading…",
+  'ui.select.country': "Choose a country",
+  'ui.select.timezone': "Choose a time zone",
+  'ui.select.language': "Choose a language",
+  'ui.select.role': "Choose a role",
+  'ui.select.noRoles': "Your school has no roles yet.",
+  'ui.date.choose': "Choose",
+  'ui.date.chooseMonth': "Choose a month",
+  'ui.date.today': "Today",
+  'ui.date.thisMonth': "This month",
+  'ui.date.prevYear': "Previous year",
+  'ui.date.nextYear': "Next year",
+  'ui.date.prevMonth': "Previous month",
+  'ui.date.nextMonth': "Next month",
+  'ui.time.choose': "Choose a time",
+  'ui.time.type': "Type a time",
+  'ui.time.hint': "Type a time like 14:30.",
+  'ui.list.search': "Search",
+  'ui.list.filter': "Filter",
+  'ui.list.filterCount': "Filter, {{count}} on",
+  'ui.list.filterBy': "Filter by",
+  'ui.list.clear': "Clear filters",
+  'ui.list.range': "{{from}} to {{to}} of {{total}}",
+  'ui.list.perPage': "Rows per page",
+  'ui.list.perPageOption': "{{count}} per page",
+  'ui.list.previous': "Previous",
+  'ui.list.next': "Next",
+  'ui.viewOnly.subscription': "Your subscription has ended, so this page is view only. Renew to make changes.",
+  'ui.viewOnly.permission': "You can look at this page but not change it. Ask your school owner if you need more access.",
+  'ui.export.label': "Export",
+  'ui.export.preparing': "Preparing…",
+  'ui.export.failed': "We couldn't prepare your file.",
+  'ui.bank.title': "Connect your bank account to unlock this",
+  'ui.bank.checkFailed': "We couldn't check your bank connection",
+  'ui.bank.connect': "Connect bank account",
+  'ui.bank.reason.payroll': "Connect your school’s bank account to start processing payroll.",
+  'ui.bank.reason.fees': "Fees are paid into your school’s bank account, so it must be connected before you can manage them.",
+  'ui.bank.reason.records': "Your records of money in and money out are kept here once your bank is connected.",
+  'ui.bank.reason.reports': "Your reports are built from the money that moves through your bank.",
+  'ui.import.row': "Row {{row}}",
+  'ui.import.ready': "Ready",
+  'ui.import.fix': "Fix this",
+  'ui.import.step1': "Download the template",
+  'ui.import.step1Note': "It has these columns: {{columns}}.",
+  'ui.import.step2': "Fill it in and upload it",
+  'ui.import.step2Note': "A CSV or Excel file, up to {{max}} rows. You’ll see every row before anything is saved.",
+  'ui.import.template': "Download template",
+  'ui.import.templateFailed': "We couldn't download the template. Please try again.",
+  'ui.import.choose': "Choose a file",
+  'ui.import.chooseAnother': "Choose another file",
+  'ui.import.checking': "Checking your file…",
+  'ui.import.unreadable': "We couldn't read this file. Please use the template and upload it as a CSV or Excel file.",
+  'ui.import.tooMany': "This file has more than {{max}} rows. Please split it and upload each part.",
+  'ui.import.summary_one': "{{count}} row is ready.",
+  'ui.import.summary_other': "{{count}} rows are ready.",
+  'ui.import.needFix_one': "{{count}} needs fixing.",
+  'ui.import.needFix_other': "{{count}} need fixing.",
+  'ui.import.add_one': "Add {{count}} row",
+  'ui.import.add_other': "Add {{count}} rows",
+  'ui.import.adding': "Adding…",
+  'ui.import.added_one': "{{count}} row was added.",
+  'ui.import.added_other': "{{count}} rows were added.",
+  'ui.import.notAdded_one': "{{count}} was not added.",
+  'ui.import.notAdded_other': "{{count}} were not added.",
+  'ui.import.done': "Done",
+  'ui.import.downloadFix': "Download the rows to fix",
+  'ui.import.problemColumn': "What to fix",
+  'ui.import.problemsFailed': "We couldn't download those rows. Please try again.",
+  'ui.search.typeToSearch': "Type to search...",
+  'ui.currency.select': "Select currency",
+  'ui.currency.search': "Search currencies...",
+  'ui.currency.none': "No currency found.",
+  'ui.currency.useCode': "Use {{code}}",
+  'ui.phone.code': "Code",
+  'ui.phone.countryCode': "Country code",
+  'ui.phone.placeholder': "Phone number",
+} as const satisfies Record<`ui.${string}`, string>;
 
-export type UITextKey = keyof typeof en;
-export type UICatalogue = Partial<Record<UITextKey, string>>;
+type PluralForm = 'zero' | 'one' | 'two' | 'few' | 'many' | 'other';
+type EnglishKey = keyof typeof en;
+
+/**
+ * A key a piece can ask for. A plural string is asked for by its base key with
+ * a numeric `count` (`ui.import.added`), and the language's form is picked.
+ */
+export type UITextKey =
+  | Exclude<EnglishKey, `${string}_${PluralForm}`>
+  | (EnglishKey extends `${infer Base}_other` ? Base : never);
+
+/** A translation. Arabic may add plural forms English lacks (`_two`, `_few`). */
+export type UICatalogue = Record<string, string>;

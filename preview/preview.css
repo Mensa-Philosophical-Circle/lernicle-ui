@@ -1,45 +1,85 @@
+@import '../theme/fonts.css';
 @import 'tailwindcss';
+@import '../theme/theme-hsl.css';
 
 @source '../src';
+@source '.';
 
 @custom-variant dark (&:is(.dark *));
 
-/* Stand-in theme for the preview only. In the apps, @lernicle/branding sets
-   these variables from the school's theme. */
+/* A stand-in school theme for the preview only, as HSL triplets like the
+   owner app. In the apps, @lernicle/branding sets these from the school's
+   theme. */
 :root {
-  --background: #ffffff;
-  --foreground: #1c1730;
-  --card: #ffffff;
-  --muted: #f3f1f8;
-  --muted-foreground: #5d5873;
-  --primary: #5b3fd1;
-  --primary-foreground: #ffffff;
-  --border: #e4e0ef;
+  --radius: 0.75rem;
+  --background: 0 0% 100%;
+  --foreground: 252 10% 35%;
+  --card: 0 0% 100%;
+  --card-foreground: 252 10% 25%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 252 10% 25%;
+  --primary: 256 62% 53%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 256 60% 96%;
+  --secondary-foreground: 256 40% 30%;
+  --muted: 252 20% 96%;
+  --muted-foreground: 252 8% 42%;
+  --accent: 256 60% 96%;
+  --accent-foreground: 256 40% 30%;
+  --destructive: 0 70% 45%;
+  --destructive-foreground: 0 0% 100%;
+  --success: 145 69% 23%;
+  --success-foreground: 0 0% 100%;
+  --warning: 38 70% 26%;
+  --warning-foreground: 0 0% 100%;
+  --info: 210 70% 35%;
+  --info-foreground: 0 0% 100%;
+  --border: 252 20% 90%;
+  --input: 252 20% 85%;
+  --ring: 256 62% 53%;
+  --chart-1: 256 62% 53%;
+  --chart-2: 190 60% 40%;
+  --chart-3: 38 80% 50%;
+  --chart-4: 145 50% 40%;
+  --chart-5: 340 60% 50%;
 }
 
 .dark {
-  --background: #14111f;
-  --foreground: #f1eff8;
-  --card: #1c1830;
-  --muted: #241f3a;
-  --muted-foreground: #b3adc9;
-  --primary: #a996ff;
-  --primary-foreground: #14111f;
-  --border: #322c4d;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-border: var(--border);
+  --background: 252 30% 6%;
+  --foreground: 252 10% 98%;
+  --card: 252 25% 10%;
+  --card-foreground: 252 10% 96%;
+  --popover: 252 25% 10%;
+  --popover-foreground: 252 10% 96%;
+  --primary: 256 90% 76%;
+  --primary-foreground: 252 30% 6%;
+  --secondary: 256 30% 18%;
+  --secondary-foreground: 256 60% 90%;
+  --muted: 252 20% 14%;
+  --muted-foreground: 252 10% 72%;
+  --accent: 256 30% 18%;
+  --accent-foreground: 256 60% 90%;
+  --destructive: 0 75% 65%;
+  --destructive-foreground: 252 30% 6%;
+  --success: 145 68% 60%;
+  --success-foreground: 252 30% 6%;
+  --warning: 38 68% 60%;
+  --warning-foreground: 240 24% 6%;
+  --info: 210 80% 70%;
+  --info-foreground: 252 30% 6%;
+  --border: 252 20% 20%;
+  --input: 252 20% 25%;
+  --ring: 256 90% 76%;
+  --chart-1: 256 90% 76%;
+  --chart-2: 190 60% 60%;
+  --chart-3: 38 80% 65%;
+  --chart-4: 145 50% 60%;
+  --chart-5: 340 70% 70%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  margin: 0;
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: var(--font-sans);
 }
