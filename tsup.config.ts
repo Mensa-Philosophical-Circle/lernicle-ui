@@ -19,7 +19,8 @@ export default defineConfig({
   dts: false,
   clean: true,
   treeshake: true,
-  // The phone field's own stylesheet stays an import, so the app's bundler
-  // loads it from react-phone-number-input.
-  external: ['react', 'react-dom', 'react/jsx-runtime', 'react-phone-number-input/style.css'],
+  // Bundled, not imported at runtime: Node refuses a JSON import without an
+  // import attribute, and the apps' tests load this package in Node.
+  noExternal: ['i18n-iso-countries/langs/en.json'],
+  external: ['react', 'react-dom', 'react/jsx-runtime'],
 });

@@ -102,8 +102,10 @@ theme has, unless the app defines its own: `scrim`, `warning-soft` and
 `warning-on-soft`. They also set `--ui-chart-1`...`5`, which the charts read.
 `scripts/themes.test.ts` compiles all of this with real Tailwind 3 and 4.
 
-The phone field imports `react-phone-number-input/style.css`, which the app's
-bundler loads.
+An app that uses `@lernicle/ui/phone` loads the phone library's stylesheet
+once, in its entry file: `import 'react-phone-number-input/style.css'`. The
+package doesn't import CSS from JavaScript, so Node (the apps' tests) can load
+every entry.
 
 Because v3 and v4 both generate these classes, the package only writes classes
 that mean the same in each. `npm run check:classes` fails the build on any

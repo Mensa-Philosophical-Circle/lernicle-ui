@@ -26,8 +26,9 @@ jobs:
         if: matrix.react == '19'
         run: npm install --no-save react@19 react-dom@19 @types/react@19 @types/react-dom@19
       - run: npm run typecheck
-      - run: npm test
+      # Before the tests: scripts/entries.test.ts loads the built files.
       - run: npm run build
+      - run: npm test
       - run: npm run check:classes
 
   # Apps install this package by git tag. Once CI passes on production, tag
