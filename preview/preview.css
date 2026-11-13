@@ -1,0 +1,45 @@
+@import 'tailwindcss';
+
+@source '../src';
+
+@custom-variant dark (&:is(.dark *));
+
+/* Stand-in theme for the preview only. In the apps, @lernicle/branding sets
+   these variables from the school's theme. */
+:root {
+  --background: #ffffff;
+  --foreground: #1c1730;
+  --card: #ffffff;
+  --muted: #f3f1f8;
+  --muted-foreground: #5d5873;
+  --primary: #5b3fd1;
+  --primary-foreground: #ffffff;
+  --border: #e4e0ef;
+}
+
+.dark {
+  --background: #14111f;
+  --foreground: #f1eff8;
+  --card: #1c1830;
+  --muted: #241f3a;
+  --muted-foreground: #b3adc9;
+  --primary: #a996ff;
+  --primary-foreground: #14111f;
+  --border: #322c4d;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-border: var(--border);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+}

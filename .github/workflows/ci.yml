@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+    branches: [production]
+  pull_request:
+
+jobs:
+  # The apps run React 18 (owner, staff, super-dashboard) and React 19
+  # (pupils), so every change is checked against both.
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        react: ['18', '19']
+    name: test (React ${{ matrix.react }})
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+      - run: npm ci
+      - name: Use React ${{ matrix.react }}
+        if: matrix.react == '19'
+        run: npm install --no-save react@19 react-dom@19 @types/react@19 @types/react-dom@19
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+      - run: npm run check:classes
+
+  # Apps install this package by git tag. Once CI passes on production, tag
+  # the version in package.json (v0.1.0, ...) unless it is tagged already, so
+  # a release is just: bump the version, merge. 0.0.0 is never released.
+  release:
+    needs: test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/production'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Tag the version if it is new
+        run: |
+          VERSION="$(node -p "require('./package.json').version")"
+          if [ "$VERSION" = "0.0.0" ]; then
+            echo "0.0.0 is the unreleased scaffold; nothing to release."
+            exit 0
+          fi
+          TAG="v$VERSION"
+          if git rev-parse -q --verify "refs/tags/$TAG" >/dev/null; then
+            echo "$TAG already exists; nothing to release."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag -a "$TAG" -m "$TAG"
+          git push origin "$TAG"
+          echo "Tagged $TAG"
