@@ -2,12 +2,22 @@
 const EMPTY = '—';
 const ISO_CURRENCY = /^[A-Za-z]{3}$/;
 
-export interface UIMoneyOptions extends Intl.NumberFormatOptions {
+/**
+ * The number options the kit passes. Kept narrow so an app's own formatters,
+ * which may accept less than Intl does, still fit.
+ */
+export interface UINumberOptions {
+  minimumFractionDigits?: number;
+  maximumFractionDigits?: number;
+  notation?: 'standard' | 'compact';
+}
+
+export interface UIMoneyOptions extends UINumberOptions {
   /** How the currency is written: symbol (default), narrow sign, ISO code or name. */
   display?: 'symbol' | 'narrowSymbol' | 'code' | 'name';
 }
 
-export interface UIPercentOptions extends Intl.NumberFormatOptions {
+export interface UIPercentOptions extends UINumberOptions {
   /** `points` (default): 85 means 85%. `fraction`: 0.85 means 85%. */
   unit?: 'points' | 'fraction';
 }
@@ -29,7 +39,7 @@ export interface UIFormatters {
   ) => string;
   number: (
     value: number | null | undefined,
-    options?: Intl.NumberFormatOptions,
+    options?: UINumberOptions,
   ) => string;
   percent: (
     value: number | null | undefined,

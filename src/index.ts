@@ -21,6 +21,7 @@ export {
   createDefaultFormatters,
   type UIFormatters,
   type UIMoneyOptions,
+  type UINumberOptions,
   type UIPercentOptions,
 } from './provider/defaultFormatters';
 export { UI_LANGUAGES, type UILanguage } from './i18n/catalogues';

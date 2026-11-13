@@ -5,9 +5,13 @@ export { ChoiceChips } from './components/ChoiceChips';
 export { ChoiceGroup } from './components/ChoiceGroup';
 export { CurrencySelect } from './components/CurrencySelect';
 export type { CurrencySelectProps } from './components/CurrencySelect/CurrencySelect.types';
+// The calendar parts, for an app's own day picker built like DateField.
+export { CalendarPopup } from './components/DateFields/CalendarPopup';
 export { DateField } from './components/DateFields/DateField';
 export { DateRangeField } from './components/DateFields/DateRangeField';
 export { MonthField } from './components/DateFields/MonthField';
+export { PickerNavButton } from './components/DateFields/PickerNavButton';
+export { PickerTrigger } from './components/DateFields/PickerTrigger';
 export { TimeField } from './components/DateFields/TimeField';
 export type {
   DateFieldProps,

@@ -7,6 +7,7 @@ import { KitFields } from './sections/KitFields';
 import { KitOverlays } from './sections/KitOverlays';
 import { KitPagePieces } from './sections/KitPagePieces';
 import { KitType } from './sections/KitType';
+import 'react-phone-number-input/style.css';
 import './preview.css';
 
 // Every piece at once, with no sign-in. Add ?lang=ar and ?dark=1 to check
