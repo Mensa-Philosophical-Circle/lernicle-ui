@@ -1,52 +1,44 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 
-import { LernicleUIProvider, UI_LANGUAGES, useUI } from '../src';
+import { briefTextClass, LernicleUIProvider } from '../src';
+import { KitCharts } from './sections/KitCharts';
+import { KitFields } from './sections/KitFields';
+import { KitOverlays } from './sections/KitOverlays';
+import { KitPagePieces } from './sections/KitPagePieces';
+import { KitType } from './sections/KitType';
 import './preview.css';
 
 // Every piece at once, with no sign-in. Add ?lang=ar and ?dark=1 to check
-// Arabic and dark mode. Each area adds its section here as it moves in.
+// Arabic and dark mode.
 const params = new URLSearchParams(window.location.search);
 const language = params.get('lang') ?? 'en';
+const dir = language === 'ar' ? 'rtl' : 'ltr';
 
+document.documentElement.lang = language;
+document.documentElement.dir = dir;
 if (params.get('dark') === '1') document.documentElement.classList.add('dark');
-
-function Settings() {
-  const { language: active, dir, formatters } = useUI();
-
-  return (
-    <section className="rounded-lg border border-border bg-card p-6">
-      <h2 className="text-lg font-semibold">Provider</h2>
-      <p className="text-sm text-muted-foreground">
-        {active} · {dir} · {formatters.money(1234.5)} · {formatters.percent(0.42)}
-      </p>
-      <p className="mt-4 flex flex-wrap gap-2 text-sm">
-        {UI_LANGUAGES.map((code) => (
-          <a key={code} className="text-primary underline" href={`?lang=${code}`}>
-            {code}
-          </a>
-        ))}
-      </p>
-    </section>
-  );
-}
-
-function Preview() {
-  return (
-    <LernicleUIProvider language={language} locale="en-NG" currency="NGN">
-      <main
-        dir={language === 'ar' ? 'rtl' : 'ltr'}
-        className="mx-auto flex max-w-3xl flex-col gap-6 p-6"
-      >
-        <h1 className="text-2xl font-bold">Lernicle UI</h1>
-        <Settings />
-      </main>
-    </LernicleUIProvider>
-  );
-}
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <Preview />
+    <LernicleUIProvider
+      currency="NGN"
+      dir={dir}
+      language={language}
+      locale={language === 'ar' ? 'ar-EG' : 'en-NG'}
+      notify={(notice) => window.alert(notice.title)}
+      timeZone="Africa/Lagos"
+    >
+      <main
+        className={`flex w-full min-w-0 flex-col gap-8 bg-background px-3.5 pb-16 pt-4 md:px-6 ${briefTextClass}`}
+      >
+        <h1 className="m-0 font-brief-display text-[26px] font-bold">Lernicle UI</h1>
+        <KitType />
+        <KitFields />
+        <KitPagePieces />
+        <KitOverlays />
+        <KitCharts />
+      </main>
+    </LernicleUIProvider>
   </StrictMode>,
 );

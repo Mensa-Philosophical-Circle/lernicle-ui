@@ -1,6 +1,8 @@
 import { cleanup, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
+import type { UITextKey } from '../i18n/en';
+
 import { LernicleUIProvider, useUI, type UILinkProps } from './LernicleUIProvider';
 
 function Probe() {
@@ -11,9 +13,9 @@ function Probe() {
       <span data-testid="language">{language}</span>
       <span data-testid="dir">{dir}</span>
       <span data-testid="money">{formatters.money(1500)}</span>
-      <span data-testid="text">{text('ui.missing')}</span>
+      <span data-testid="text">{text('ui.missing' as UITextKey)}</span>
       <Link href="/bank">Connect</Link>
-      <button type="button" onClick={() => notify('Saved', 'success')}>
+      <button type="button" onClick={() => notify({ title: 'Saved', tone: 'success' })}>
         Notify
       </button>
     </div>
@@ -84,6 +86,6 @@ describe('LernicleUIProvider', () => {
     expect(screen.getByRole('link', { name: 'Connect' }).getAttribute('href')).toBe('/app/bank');
     expect(screen.getByTestId('text').textContent).toBe('Reworded');
     screen.getByRole('button', { name: 'Notify' }).click();
-    expect(notify).toHaveBeenCalledWith('Saved', 'success');
+    expect(notify).toHaveBeenCalledWith({ title: 'Saved', tone: 'success' });
   });
 });
