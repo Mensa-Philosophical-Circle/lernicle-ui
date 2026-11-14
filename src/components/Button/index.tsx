@@ -36,6 +36,11 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   tone?: ButtonTone;
   /** Style a child instead, such as the app's router link. */
   asChild?: boolean;
+  /**
+   * A square 44px button holding only an icon, as the designs draw them.
+   * Give it an `aria-label`.
+   */
+  iconOnly?: boolean;
 }
 
 /**
@@ -43,7 +48,10 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
  * button defaults to `type="button"`, so it never submits a form by accident.
  */
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ tone = 'primary', asChild = false, className, type, ...props }, ref) => {
+  (
+    { tone = 'primary', asChild = false, iconOnly = false, className, type, ...props },
+    ref,
+  ) => {
     const Comp = asChild ? Slot : 'button';
 
     return (
@@ -52,6 +60,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         className={cn(
           'inline-flex items-center justify-center gap-2 [&_svg]:size-4 [&_svg]:shrink-0',
           TONE[tone],
+          iconOnly && 'size-11 min-h-11 shrink-0 p-0',
           className,
         )}
         type={asChild ? undefined : (type ?? 'button')}
