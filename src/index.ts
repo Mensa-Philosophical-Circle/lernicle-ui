@@ -30,6 +30,16 @@ export type { TextParams } from './i18n/interpolate';
 export type { UITranslate } from './i18n/translate';
 
 export { BankLockPanel } from './components/BankLockPanel';
+export { DataTable } from './components/DataTable';
+export type {
+  ColumnFrom,
+  DataTableColumn,
+  DataTableProps,
+  DataTableSelection,
+  DataTableSort,
+  SecondaryText,
+  SortDirection,
+} from './components/DataTable/DataTable.types';
 export { Button, type ButtonProps, type ButtonTone } from './components/Button';
 export { Heading, type HeadingProps } from './components/Heading';
 export { CentredState } from './components/CentredState';
