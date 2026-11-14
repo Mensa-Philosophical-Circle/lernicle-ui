@@ -44,6 +44,23 @@ describe('Button', () => {
   });
 });
 
+describe('Button sizes, as the designs draw them', () => {
+  it('is 48px with 12px corners; primary has 20px sides', () => {
+    render(<Button>Save</Button>);
+    const classes = screen.getByRole('button', { name: 'Save' }).className.split(' ');
+
+    expect(classes).toEqual(expect.arrayContaining(['min-h-12', 'rounded-xl', 'px-5', 'font-bold']));
+  });
+
+  it('can be a square 44px icon button', () => {
+    render(<Button aria-label="Close" iconOnly tone="quiet">×</Button>);
+    const classes = screen.getByRole('button', { name: 'Close' }).className.split(' ');
+
+    expect(classes).toEqual(expect.arrayContaining(['size-11', 'min-h-11', 'p-0']));
+    expect(classes).not.toContain('min-h-12');
+  });
+});
+
 describe('Heading', () => {
   it('sets the level and the look apart', () => {
     render(

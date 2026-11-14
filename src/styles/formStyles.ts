@@ -26,9 +26,11 @@ export const selectContentClass =
 export const phoneFieldClass =
   'gap-1.5 [&_input]:h-12 [&_input]:rounded-xl [&_input]:border-border [&_input]:bg-card [&_input]:px-3.5 [&_input]:text-[15px] [&_input]:leading-[22px] [&_input]:shadow-none md:[&_input]:text-[15px] [&_input]:focus-visible:ring-2';
 
-export const primaryButtonClass = `${buttonBase} min-h-12 rounded-xl bg-primary px-6 font-bold text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground`;
+// 48px, 12px corners and 20px sides, as every Morning Brief design draws it.
+export const primaryButtonClass = `${buttonBase} min-h-12 rounded-xl bg-primary px-5 font-bold text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground`;
 
-export const dialogPrimaryButtonClass = `${primaryButtonClass} px-5`;
+/** Kept for existing callers: the same as primaryButtonClass. */
+export const dialogPrimaryButtonClass = primaryButtonClass;
 
 export const secondaryButtonClass = `${buttonBase} min-h-12 rounded-xl border border-border bg-card px-[18px] font-semibold text-foreground hover:bg-muted hover:text-foreground`;
 
@@ -39,9 +41,9 @@ export const primaryLinkClass = `inline-flex min-h-12 items-center justify-cente
 
 export const dangerButtonClass = `${buttonBase} min-h-12 rounded-xl bg-destructive px-5 font-bold text-destructive-foreground hover:bg-destructive/90 hover:text-destructive-foreground`;
 
-export const linkButtonClass = `${buttonBase} min-h-11 rounded-md px-1 font-semibold text-primary hover:bg-transparent hover:text-primary hover:underline`;
+export const linkButtonClass = `${buttonBase} min-h-11 rounded-md px-0 font-semibold text-primary hover:bg-transparent hover:text-primary hover:underline`;
 
-export const dangerLinkButtonClass = `${buttonBase} min-h-11 rounded-md px-1 font-semibold text-destructive hover:bg-transparent hover:text-destructive hover:underline`;
+export const dangerLinkButtonClass = `${buttonBase} min-h-11 rounded-md px-0 font-semibold text-destructive hover:bg-transparent hover:text-destructive hover:underline`;
 
 export const checkboxClass =
   'mt-px h-5 w-5 shrink-0 rounded-[5px] border-muted-foreground shadow-none data-[state=checked]:border-primary';
