@@ -6,6 +6,7 @@ import { KitCharts } from './sections/KitCharts';
 import { KitFields } from './sections/KitFields';
 import { KitOverlays } from './sections/KitOverlays';
 import { KitPagePieces } from './sections/KitPagePieces';
+import { KitTable } from './sections/KitTable';
 import { KitType } from './sections/KitType';
 import 'react-phone-number-input/style.css';
 import './preview.css';
@@ -37,6 +38,7 @@ createRoot(document.getElementById('root')!).render(
         <KitType />
         <KitFields />
         <KitPagePieces />
+        <KitTable />
         <KitOverlays />
         <KitCharts />
       </main>
